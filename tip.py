@@ -10,7 +10,7 @@ def tip_release(file) -> None:
     
     write(file, "; --- Soltar punta ---")
     write(file, f"G0 X{BIN_X:.3f} Y{BIN_Y:.3f} F{TRAVEL_SPEED} ; Mover a cubeta")
-    write(file, f"G1 Z{INSERTION_HEIGHT:.3f} F{WORKING_SPEED} ; Bajar a cubeta")
+    write(file, f"G1 Z{TIP_CHANGE_HEIGHT:.3f} F{WORKING_SPEED} ; Bajar a cubeta")
     
     #TODO Aquí va el comando de soltar punta
     

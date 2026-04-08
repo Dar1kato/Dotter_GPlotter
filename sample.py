@@ -19,7 +19,7 @@ def get_sample(file, color: str) -> None:
     
     write(file, f"; --- Tomar muestra: {color} ---")
     write(file, f"G0 X{pos[0]:.3f} Y{pos[1]:.3f} F{TRAVEL_SPEED} ; Mover a pocillo {color}")
-    write(file, f"G1 Z{INSERTION_HEIGHT:.3f} F{WORKING_SPEED} ; Bajar a muestra")
+    write(file, f"G1 Z{SAMPLE_HEIGHT:.3f} F{WORKING_SPEED} ; Bajar a muestra")
     pipette_press(file)
     pipette_release(file)
     write(file, f"G1 Z{BASE_HEIGHT:.3f} F{WORKING_SPEED} ; Subir con muestra")

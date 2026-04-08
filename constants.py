@@ -10,6 +10,7 @@ WORKING_SPEED  = 500
 BASE_HEIGHT       =  10.0  
 INSERTION_HEIGHT  =  -5.0 
 TIP_CHANGE_HEIGHT = -12.0  
+SAMPLE_HEIGHT = -5.0
 
 #######
 # Tip box position and spacing
