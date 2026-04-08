@@ -31,11 +31,14 @@ def translate_coordinates(file, data: dict) -> None:
     """
     tip_index = 0
     
+    # Get Coordinates for Each Color
     for color, points in data.items():
         write(file, f"\n; ========== COLOR: {color.upper()} ==========")
         tip_change(file, tip_index)
         tip_index += 1
         get_sample(file, color)
+        
+        # Coordinte Translation
         for x, y in points:
             real_x = x * DISC_SPACING
             real_y = y * DISC_SPACING
@@ -48,7 +51,7 @@ def translate_coordinates(file, data: dict) -> None:
     # Program end
     write(file, "\n; --- Fin del programa ---")
     write(file, f"G0 Z{BASE_HEIGHT:.3f} F{TRAVEL_SPEED} ; Subir seguro")
-    write(file, "G0 X0.000 Y0.000 F{TRAVEL_SPEED} ; Volver al origen")
+    write(file, f"G0 X0.000 Y0.000 F{TRAVEL_SPEED} ; Volver al origen")
     write(file, "M2 ; Fin del programa")
 
 

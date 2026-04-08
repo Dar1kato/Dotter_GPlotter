@@ -9,7 +9,6 @@ G0 Z10.000 F3000 ; Subir a altura segura
 ; --- Soltar punta ---
 G0 X100.000 Y0.000 F3000 ; Mover a cubeta
 G1 Z-5.000 F500 ; Bajar a cubeta
-G1 Z10.000 F500 ; Subir
 ; --- Tomar nueva punta ---
 G0 X50.000 Y0.000 F3000 ; Moverse sobre punta #0
 G1 Z-12.000 F500 ; Bajar a fijar punta
@@ -74,5 +73,5 @@ G4 P300 ; Esperar 300ms (reemplaza con tu comando de soltar)
 
 ; --- Fin del programa ---
 G0 Z10.000 F3000 ; Subir seguro
-G0 X0.000 Y0.000 F{TRAVEL_SPEED} ; Volver al origen
+G0 X0.000 Y0.000 F3000 ; Volver al origen
 M2 ; Fin del programa
