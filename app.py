@@ -27,7 +27,7 @@ HTML = """
   </style>
 </head>
 <body>
-  <h1>GPlotter - Fablab Puebla</h1>
+  <h1>Dotter GPlotter - Fablab Puebla</h1>
   <textarea id="json-input" placeholder='Paste your JSON here...'></textarea>
   <button onclick="convertir()">Generate GCode</button>
   <div id="status"></div>
