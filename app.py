@@ -9,7 +9,7 @@ HTML = """
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Petri → GCode</title>
+  <title>GPlotter - Fablab Puebla</title>
   <style>
     body { font-family: monospace; background: #0d0e10; color: #e6e3dc; 
            display: flex; flex-direction: column; align-items: center; 
@@ -27,7 +27,7 @@ HTML = """
   </style>
 </head>
 <body>
-  <h1>Coordenates to GCode</h1>
+  <h1>GPlotter - Fablab Puebla</h1>
   <textarea id="json-input" placeholder='Paste your JSON here...'></textarea>
   <button onclick="convertir()">Generate GCode</button>
   <div id="status"></div>
