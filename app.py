@@ -27,9 +27,9 @@ HTML = """
   </style>
 </head>
 <body>
-  <h1>Petri / Paint → GCode</h1>
-  <textarea id="json-input" placeholder='Pega aquí el JSON de coordenadas...'></textarea>
-  <button onclick="convertir()">Generar GCode</button>
+  <h1>Coordenates to GCode</h1>
+  <textarea id="json-input" placeholder='Paste your JSON here...'></textarea>
+  <button onclick="convertir()">Generate GCode</button>
   <div id="status"></div>
   <div id="error"></div>
 
@@ -44,7 +44,7 @@ HTML = """
       try {
         data = JSON.parse(raw);
       } catch {
-        errorDiv.textContent = 'JSON inválido — revisa el formato.';
+        errorDiv.textContent = 'Invalid JSON. Please check your input.';
         return;
       }
 
@@ -58,12 +58,11 @@ HTML = """
 
         if (!res.ok) {
           const msg = await res.text();
-          errorDiv.textContent = `Error del servidor: ${msg}`;
+          errorDiv.textContent = `Server error: ${msg}`;
           status.textContent = '';
           return;
         }
 
-        // Descargar el archivo automáticamente
         const blob = await res.blob();
         const url  = URL.createObjectURL(blob);
         const a    = document.createElement('a');
@@ -71,9 +70,9 @@ HTML = """
         a.download = 'export.gcode';
         a.click();
         URL.revokeObjectURL(url);
-        status.textContent = '✓ Descargado';
+        status.textContent = '✓ Downloaded';
       } catch (err) {
-        errorDiv.textContent = `Error de red: ${err.message}`;
+        errorDiv.textContent = `Network error: ${err.message}`;
         status.textContent = '';
       }
     }
@@ -103,4 +102,4 @@ def generar():
         return str(e), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
