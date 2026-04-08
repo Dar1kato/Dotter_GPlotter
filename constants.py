@@ -43,3 +43,5 @@ COLOR_POSITIONS = {
 #######
 DISC_SPACING = 5.0   
 
+def write(file, line: str) -> None:
+    file.write(line + "\n")
