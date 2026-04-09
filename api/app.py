@@ -15,7 +15,7 @@ HTML = """
            display: flex; flex-direction: column; align-items: center; 
            justify-content: center; min-height: 100vh; margin: 0; gap: 16px; }
     h1   { font-size: 18px; letter-spacing: 0.1em; color: #4a66f0; }
-    textarea { width: 480px; height: 260px; background: #141517; color: #8aad5a;
+    textarea { width: 480px; height: 260px; background: #141517; color: #7080d3;
                border: 1px solid #262729; border-radius: 8px; padding: 12px;
                font-family: monospace; font-size: 12px; resize: vertical; }
     button { padding: 10px 32px; background: #4a66f0; color: #0d0e10;
