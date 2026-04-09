@@ -29,12 +29,12 @@ HTML = """
 <body>
   <h1>Dotter GPlotter - Fablab Puebla</h1>
   <textarea id="json-input" placeholder='Paste your JSON here...'></textarea>
-  <button onclick="convertir()">Generate GCode</button>
+  <button onclick="convert()">Generate GCode</button>
   <div id="status"></div>
   <div id="error"></div>
 
   <script>
-    async function convertir() {
+    async function convert() {
       const raw = document.getElementById('json-input').value.trim();
       const status = document.getElementById('status');
       const errorDiv = document.getElementById('error');
@@ -86,7 +86,7 @@ def index():
     return render_template_string(HTML)
 
 @app.route('/convert', methods=['POST'])
-def generar():
+def generate_gcode():
     data = request.get_json()
     if not data:
         return 'No se recibió JSON', 400
