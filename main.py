@@ -2,57 +2,84 @@ from constants import *
 from pipette import pipette_press, pipette_release
 from tip import tip_change
 from sample import get_sample
-import json
-
-OUTPUT_FILE = "export.gcode"
-GCODE = []
-
-# main.py modificado
 
 def config() -> list:
-    # Ahora devuelve una lista en lugar de modificar una global
-    c = []
-    c.append("G21 ; Unidades en milímetros")
-    c.append("G17 ; Plano XY")
-    c.append("G90 ; Coordenadas absolutas")
-    c.append("G94 ; Feed rate en unidades/minuto")
-    c.append("G28 ; Homing")
-    c.append(f"G0 Z{BASE_HEIGHT:.3f} F{TRAVEL_SPEED} ; Subir a altura segura")
-    return c
+    """
+    Generates the basic config gcode strings for every file
+
+    Returns:
+        list: list containing gcode
+    """
+    GCODE: list = []
+    GCODE.append("G21 ; Unidades en milímetros")
+    GCODE.append("G17 ; Plano XY")
+    GCODE.append("G90 ; Coordenadas absolutas")
+    GCODE.append("G94 ; Feed rate en unidades/minuto")
+    GCODE.append("G28 ; Homing")
+    GCODE.append(f"G0 Z{BASE_HEIGHT:.3f} F{TRAVEL_SPEED} ; Subir a altura segura")
+    
+    return GCODE
+
 
 def translate_coordinates(data: dict) -> list:
-    gcode_local: list = []
-    tip_index: int = 0
+    """
+    Generates gcode from given coordinates
+
+    Args:
+        data (dict): coordinates dictionary
+
+    Returns:
+        list: list containing gcode
+    """
+    
+    gcode_local: list = []      # Current gcode list
+    tip_index: int = 0          # Index for tip changes
     
     for color, points in data.items():
         gcode_local.append(f"\n; ========== COLOR: {color.upper()} ==========")
         
-        # IMPORTANTE: Extendemos la lista con lo que devuelven las funciones
-        gcode_local.extend(tip_change(tip_index)) 
-        tip_index += 1
-        
-        # Asegúrate de que get_sample también devuelva una lista
-        gcode_local.extend(get_sample(color))
-        
+        # Handles each point movement and insertion, adds its gcode to the current list
         for x, y in points:
+            
+            # Tip change logic, happens once per point
+            gcode_local.extend(tip_change(tip_index)) 
+            tip_index += 1
+        
+            # Sample loading logic, happens once per point
+            gcode_local.extend(get_sample(color))
+            
             real_x = x * DISC_SPACING
             real_y = y * DISC_SPACING
+            
             gcode_local.append(f"G0 X{real_x:.3f} Y{real_y:.3f} F{TRAVEL_SPEED}")
             gcode_local.append(f"G1 Z{INSERTION_HEIGHT:.3f} F{WORKING_SPEED}")
-            gcode_local.extend(pipette_press()) # Devolver lista
+            
+            # Pipette press logic
+            gcode_local.extend(pipette_press()) 
+            
             gcode_local.append(f"G1 Z{BASE_HEIGHT:.3f} F{WORKING_SPEED}")
-            gcode_local.extend(pipette_release()) # Devolver lista
+            
+            # Pipette release logic
+            gcode_local.extend(pipette_release()) 
 
-    # Finalización
+    # Program end logic
     gcode_local.append(f"\n; --- Fin del programa ---")
     gcode_local.append("M2")
+    
     return gcode_local
 
-def main(data) -> str:
-    # Esta es la función que llamará Flask
-    resultado = []
-    resultado.extend(config())
-    resultado.extend(translate_coordinates(data))
+def main(data: dict) -> str:
+    """
+    Flask script call
+
+    Args:
+        data (dict): coordinates dictionary
+
+    Returns:
+        str: Generated gcode string
+    """
+    result: list = []
+    result.extend(config())
+    result.extend(translate_coordinates(data))
     
-    # Unimos todo en un solo bloque de texto
-    return "\n".join(resultado)
+    return "\n".join(result)
