@@ -1,5 +1,5 @@
 from constants import *
-from pipette import pipette_press, pipette_release
+from pipette import pipette_suction, pipette_release
 
 def get_sample(color: str) -> list:
     """
@@ -25,8 +25,7 @@ def get_sample(color: str) -> list:
     GCODE.append(f"; --- Taking sample: {color} ---")
     GCODE.append(f"G0 X{pos[0]:.3f} Y{pos[1]:.3f} F{TRAVEL_SPEED} ; Move to well {color}")
     GCODE.append(f"G1 Z{SAMPLE_HEIGHT:.3f} F{WORKING_SPEED} ; Move to sample height")
-    GCODE.extend(pipette_press())
-    GCODE.extend(pipette_release())
+    GCODE.extend(pipette_suction())
     GCODE.append(f"G1 Z{BASE_HEIGHT:.3f} F{WORKING_SPEED} ; Move up with sample")
     
     return GCODE

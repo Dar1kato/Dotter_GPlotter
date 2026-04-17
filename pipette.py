@@ -1,18 +1,4 @@
-from constants import write
-
-def pipette_press() -> list:
-    """
-    Handles the pressing of the pipette button
-
-    Args:
-        file (file): route to the file where the GCode will be written
-    """
-    GCODE: list = []
-    
-    #TODO Actuator logic here
-    GCODE.append("G4 P500 ; Esperar 500ms (reemplaza con tu comando de dispensar)") #! Provisional, replace with dispensing command
-    
-    return GCODE
+from constants import *
 
 def pipette_release() -> list:
     """
@@ -23,7 +9,22 @@ def pipette_release() -> list:
     """
     GCODE: list = []
     
-    #TODO Actuator logic here
-    GCODE.append("G4 P300 ; Esperar 300ms (reemplaza con tu comando de soltar)") #! Provisional, replace with releasing command
+    GCODE.append("M67 E0 Q0.65")
+    GCODE.append(f"G1 Z{BASE_HEIGHT:.3f} F{WORKING_SPEED}")
+    GCODE.append("M67 E0 Q0.0")
+    
+    return GCODE
+
+def pipette_suction() -> list:
+    """
+    Handles the suction of the pipette button
+
+    Args:
+        file (file): route to the file where the GCode will be written
+    """
+    GCODE: list = []
+    
+    GCODE.append("M67 E0 Q0.55")
+    GCODE.append("M67 E0 Q0.0")
     
     return GCODE

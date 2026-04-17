@@ -1,5 +1,5 @@
 from constants import *
-from pipette import pipette_press, pipette_release
+from pipette import pipette_suction, pipette_release
 from tip import tip_change
 from sample import get_sample
 
@@ -48,20 +48,16 @@ def translate_coordinates(data: dict) -> list:
             # Sample loading logic, happens once per point
             gcode_local.extend(get_sample(color))
             
+            
             real_x = x * DISC_SPACING
             real_y = y * DISC_SPACING
             
+            # Move to the point and insert logic
             gcode_local.append(f"G0 X{real_x:.3f} Y{real_y:.3f} F{TRAVEL_SPEED}")
             gcode_local.append(f"G1 Z{INSERTION_HEIGHT:.3f} F{WORKING_SPEED}")
+             
+            gcode_local.extend(pipette_release())
             
-            # Pipette press logic
-            gcode_local.extend(pipette_press()) 
-            
-            gcode_local.append(f"G1 Z{BASE_HEIGHT:.3f} F{WORKING_SPEED}")
-            
-            # Pipette release logic
-            gcode_local.extend(pipette_release()) 
-
     # Program end logic
     gcode_local.append(f"\n; --- Fin del programa ---")
     gcode_local.append("M2")
