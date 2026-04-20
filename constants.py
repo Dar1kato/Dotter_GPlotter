@@ -1,8 +1,7 @@
 #######
 # Speeds
 #######
-TRAVEL_SPEED   = 3000  
-
+TRAVEL_SPEED   = 300  
 
 #######
 # Color positions
@@ -15,6 +14,5 @@ COLOR_DICT = {
     "purple":   "S150",
     "orange":   "S175"
 }
-
 
 TIME = 30
