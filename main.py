@@ -44,6 +44,7 @@ def translate_coordinates(data: dict) -> list:
     gcode_local.append("G28 ; Home")
     gcode_local.append("M2")
     
+    
     return gcode_local
 
 def main(data: dict) -> str:
