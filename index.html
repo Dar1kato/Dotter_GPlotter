@@ -10,24 +10,36 @@
     <button onclick="sendToDownload()">Generate Gcode</button>
 
     <script>
-    async function sendToDownload() {
-        const rawData = document.getElementById('jsonInput').value;
-        const response = await fetch('/convert', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: rawData
+    async function convert() {
+      // ... validación JSON igual ...
+        
+      status.textContent = 'Generando...';
+      try {
+        const res = await fetch('/convert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
         });
-
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "export.gcode";
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
+        if (!res.ok) {
+          errorDiv.textContent = `Server error: ${await res.text()}`;
+          status.textContent = '';
+          return;
         }
+    
+        // Leer stream completo y descargar al terminar
+        const text = await res.text();
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'export.gcode';
+        a.click();
+        URL.revokeObjectURL(url);
+        status.textContent = '✓ Descargado';
+      } catch (err) {
+        errorDiv.textContent = `Network error: ${err.message}`;
+        status.textContent = '';
+      }
     }
 </script>
 </body>
