@@ -15,4 +15,4 @@ COLOR_DICT = {
     "orange":   "S175"
 }
 
-TIME = 3
+TIME = 1
