@@ -47,21 +47,18 @@ def translate_coordinates(data: dict) -> list:
     
     return gcode_local
 
-def main_stream(data: dict):
-    # Primero emitir config
-    for line in config():
-        yield line + "\n"
+def main(data: dict) -> str:
+    """
+    Flask script call
 
-    # Generar coordenadas en streaming durante TIME segundos
-    start = time.time()
-    while time.time() - start < TIME:
-        for color, points in data.items():
-            yield f"M3 {COLOR_DICT[color]} ; Color: {color}\n"
-            for x, y in points:
-                yield f"G0 X{x:.3f} Y{y:.3f} F{TRAVEL_SPEED}\n"
+    Args:
+        data (dict): coordinates dictionary
 
-    # Fin del programa
-    yield "\n; --- Fin del programa ---\n"
-    yield "M3 S0\n"
-    yield "G28 ; Home\n"
-    yield "M2\n"
+    Returns:
+        str: Generated gcode string
+    """
+    result: list = []
+    result.extend(config())
+    result.extend(translate_coordinates(data))
+    
+    return "\n".join(result)

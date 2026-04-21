@@ -1,6 +1,6 @@
-from flask import Flask, request, send_file, render_template_string, Response
+from flask import Flask, request, send_file, render_template_string
 import io
-from main import main_stream
+from main import main
 
 app = Flask(__name__)
 
@@ -81,21 +81,22 @@ HTML = """
 </html>
 """
 
+@app.route('/')
+def index():
+    return render_template_string(HTML)
+
 @app.route('/convert', methods=['POST'])
 def generate_gcode():
     data = request.get_json()
     if not data:
         return 'No se recibió JSON', 400
-
-    def generate():
-        try:
-            for chunk in main_stream(data):
-                yield chunk
-        except Exception as e:
-            yield f"\n; ERROR: {str(e)}"
-
-    return Response(
-        generate(),
-        mimetype='text/plain',
-        headers={'Content-Disposition': 'attachment; filename="export.gcode"'}
-    )
+    try:
+        gcode_string = main(data)
+        return send_file(
+            io.BytesIO(gcode_string.encode()),
+            mimetype='text/plain',
+            download_name='export.gcode',
+            as_attachment=True,
+        )
+    except Exception as e:
+        return str(e), 500
